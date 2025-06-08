@@ -1,0 +1,9 @@
+{
+  "noaccess": "{green}[GunsMenu] {default}You don't have access to use this command.",
+  "not.alive": "{green}[GunsMenu] {red}You must be alive to choose weapon.",
+  "gun.selected": "{green}[GunsMenu] {default}You've selected {lime}{0}{default}.",
+
+  "gunsmenu.title": "GunsMenu",
+  "secondarymenu.title": "Secondary",
+  "primarymenu.title": "Primary"
+}
