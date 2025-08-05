@@ -34,7 +34,7 @@
 **Example config:**
 ```json
 {
-  "Menutype": "ChatMenu",    // ChatMenu, ConsoleMenu, CenterHtml, WasdMenu, ScreenMenu
+  "Menutype": "CenterHtml",    // ChatMenu, ConsoleMenu, CenterHtml, WasdMenu
   "PermissionForCommands": "",    // "#css/vip" or "@css/vip" for example
   "Blacklist": ["awp", "NEGEV"],
   "ConfigVersion": 1

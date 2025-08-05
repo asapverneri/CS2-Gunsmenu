@@ -15,7 +15,7 @@ public class GunsMenu : BasePlugin, IPluginConfig<GunsMenuConfig>
     public override string ModuleName => "GunsMenu";
     public override string ModuleDescription => "Gunsmenu for CS2";
     public override string ModuleAuthor => "verneri";
-    public override string ModuleVersion => "1.0";
+    public override string ModuleVersion => "1.1";
 
     public GunsMenuConfig Config { get; set; } = new();
 
@@ -198,7 +198,6 @@ public class GunsMenu : BasePlugin, IPluginConfig<GunsMenuConfig>
             "ConsoleMenu" => new ConsoleMenu(menuName, this),
             "CenterHtml" => new CenterHtmlMenu(menuName, this),
             "WasdMenu" => new WasdMenu(menuName, this),
-            "ScreenMenu" => new ScreenMenu(menuName, this),
             _ => null
         };
     }
