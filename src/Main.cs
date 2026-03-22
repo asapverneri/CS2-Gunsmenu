@@ -15,7 +15,7 @@ public class GunsMenu : BasePlugin, IPluginConfig<GunsMenuConfig>
     public override string ModuleName => "GunsMenu";
     public override string ModuleDescription => "Gunsmenu for CS2";
     public override string ModuleAuthor => "verneri";
-    public override string ModuleVersion => "1.1";
+    public override string ModuleVersion => "1.2";
 
     public GunsMenuConfig Config { get; set; } = new();
 
@@ -28,21 +28,61 @@ public class GunsMenu : BasePlugin, IPluginConfig<GunsMenuConfig>
     {
         Logger.LogInformation($"Loaded (version {ModuleVersion})");
 
-
         if (!string.IsNullOrWhiteSpace(Config.Menutype))
-        AddCommand($"css_guns", "", GunsCommand);
+        {
+            AddCommand("css_guns", "", GunsCommand);
+            AddCommand("css_secondary", "", SecondaryCommand);
+            AddCommand("css_primary", "", PrimaryCommand);
 
-        if (!string.IsNullOrWhiteSpace(Config.Menutype))
-        AddCommand($"css_secondary", "", SecondaryCommand);
+            if(Config.WeaponCommands)
+            {
+                foreach (var weapon in Helpers.Weapons.Where(w => !Config.WeaponBlacklist.Contains(w.Key, StringComparer.OrdinalIgnoreCase)))
+                {
+                    string cmd = $"css_{weapon.Key.ToLower()}";
+                    string weaponKey = weapon.Key;
 
-        if (!string.IsNullOrWhiteSpace(Config.Menutype))
-        AddCommand($"css_primary", "", PrimaryCommand);
+                    AddCommand(cmd, $"", (player, command) =>
+                    {
+                        if (player == null || !player.IsValid)
+                            return;
 
-        if (string.IsNullOrWhiteSpace(Config.Menutype))
+                        if (!string.IsNullOrEmpty(Config.FlagForCommands))
+                        {
+                            if (Config.FlagForCommands.StartsWith("#"))
+                            {
+                                if (!AdminManager.PlayerInGroup(player, Config.FlagForCommands))
+                                {
+                                    player.PrintToChat($"{Localizer["noaccess"]}");
+                                    return;
+                                }
+                            }
+                            else if (Config.FlagForCommands.StartsWith("@"))
+                            {
+                                if (!AdminManager.PlayerHasPermissions(player, Config.FlagForCommands))
+                                {
+                                    player.PrintToChat($"{Localizer["noaccess"]}");
+                                    return;
+                                }
+                            }
+                        }
+
+                        if (!player.PawnIsAlive)
+                        {
+                            player.PrintToChat($"{Localizer["not.alive"]}");
+                            return;
+                        }
+
+                        Helpers.GiveSelectedWeapon(player, weaponKey);
+                        player.PrintToChat($"{Localizer["gun.selected", weaponKey]}");
+                    });
+                }
+            }
+
+        }
+        else
         {
             Logger.LogError("Commands disabled, menutype configuration is incorrect. Check the configuration file.");
         }
-
     }
     public void GunsCommand(CCSPlayerController? player, CommandInfo command)
     {
@@ -52,6 +92,7 @@ public class GunsMenu : BasePlugin, IPluginConfig<GunsMenuConfig>
         if (!player.PawnIsAlive)
         {
             player.PrintToChat($"{Localizer["not.alive"]}");
+            return;
         }
 
         if (!string.IsNullOrEmpty(Config.FlagForCommands))

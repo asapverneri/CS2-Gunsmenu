@@ -11,6 +11,9 @@ namespace GunsMenu
         [JsonPropertyName("PermissionForCommands")]
         public string FlagForCommands { get; set; } = "";
 
+        [JsonPropertyName("WeaponCommands")]
+        public bool WeaponCommands { get; set; } = true;
+
         [JsonPropertyName("Blacklist")]
         public List<string> WeaponBlacklist { get; set; } = new();
     }
