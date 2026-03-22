@@ -15,7 +15,7 @@ public class GunsMenu : BasePlugin, IPluginConfig<GunsMenuConfig>
     public override string ModuleName => "GunsMenu";
     public override string ModuleDescription => "Gunsmenu for CS2";
     public override string ModuleAuthor => "verneri";
-    public override string ModuleVersion => "1.2";
+    public override string ModuleVersion => "1.3";
 
     public GunsMenuConfig Config { get; set; } = new();
 
@@ -140,6 +140,7 @@ public class GunsMenu : BasePlugin, IPluginConfig<GunsMenuConfig>
         if (!player.PawnIsAlive)
         {
             player.PrintToChat($"{Localizer["not.alive"]}");
+            return;
         }
 
         if (!string.IsNullOrEmpty(Config.FlagForCommands))
@@ -189,6 +190,7 @@ public class GunsMenu : BasePlugin, IPluginConfig<GunsMenuConfig>
         if(!player.PawnIsAlive)
         {
             player.PrintToChat($"{Localizer["not.alive"]}");
+            return;
         }
 
         if (!string.IsNullOrEmpty(Config.FlagForCommands))
